@@ -30,7 +30,7 @@ versionElem.append(document.createTextNode("v" + version));
 document.body.append(versionElem);
 
 function connectToServer() {
-  const address = "wss://" + input.value.trim(); 
+  const address = "ws://" + input.value.trim(); 
   console.log("Connecting to " + address + "...");
   socket = new WebSocket(address); 
   socket.onopen = onOpen;
