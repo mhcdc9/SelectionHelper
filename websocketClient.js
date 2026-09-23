@@ -1,5 +1,5 @@
 "set strict";
-const version = "1.1.0";
+const version = "1.1.1";
 
 
 let mainBackgroundColor = "";
@@ -30,7 +30,7 @@ versionElem.append(document.createTextNode("v" + version));
 document.body.append(versionElem);
 
 function connectToServer() {
-  const address = "ws://" + input.value.trim(); 
+  const address = "wss://" + input.value.trim(); 
   console.log("Connecting to " + address + "...");
   socket = new WebSocket(address); 
   socket.onopen = onOpen;
