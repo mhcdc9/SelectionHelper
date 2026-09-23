@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./webpage.css" />
+    </head>
+    <body>
+
+    <h1 id="title" align="center">Chopping Block Helper</h1>
+
+    
+      <div id = "connect-div" align = "center">
+		<div id="manual">
+			Insert IP:Port: <input id="input">
+			<button id="connect">
+			Connect
+			</button>
+			<br>
+			<p>Input the IP and port number to connect to a chopping block program.</p>
+			<p>IPv4 Ex: <strong>192.168.1.253:930</strong></p>
+			<p>IPv6 Ex: <strong>[2600:1700:12e0:5770:29c4:97c0:dbd2:e732]:888</strong></p>
+		</div>
+		<div id="query" hidden>
+			Password: <input id="password">
+			<button id="queryconnect">Connect</button>
+			<br>
+			<p>To manually input the IP, erase everything after the "?" in the url and click [Enter].</p>
+		</div>
+      </div>
+
+      <div class="left">
+        <div>
+          <ul id = "menu">
+
+          </ul>
+        </div>
+      </div>
+
+      <div id="ping" class="right">
+        <p> Welcome to the ping box.</p> 
+		
+		<p>Click anywhere to ping. </p>
+      </div>
+
+    
+
+    <ol id="output"></ol>
+
+    <script src="./websocketClient.js"></script>
+	<script>
+		const urlParams = new URLSearchParams(window.location.search);
+		const key = urlParams.get('key');
+		if (key != null)
+		{
+			console.log(key);
+			manual.hidden = true;
+			query.hidden = false;
+			input.value = key;
+			queryconnect.addEventListener("click", decrypt);
+		}
+		
+		function decrypt() {
+			input.value = distort(key, password.value.trim(), 1);
+			connectToServer();
+		}
+		
+		function encrypt(message, passKey) {
+			return distort(message, passKey, -1);
+		}
+		
+		function distort(message, passKey, direction) {
+			var distorted = "";
+			for(let i=0; i<message.length; i++)
+			{
+				var c = message.charAt(i);
+				var n = parseInt(c);
+				//console.log(n);
+				if (isNaN(n))
+				{
+					distorted += c;
+				}
+				else
+				{
+					n += passKey.charCodeAt(i%passKey.length)*direction;
+					n %= 10;
+					if (n<0) {
+						n += 10;
+					}
+					distorted += n;
+				}
+			}
+			return distorted;
+		}
+	</script>
+	<script>
+		resize();
+		window.addEventListener("resize", resize);
+		
+		function resize() {
+			console.log(window.innerHeight);
+			if (window.innerHeight > window.innerWidth)
+			{
+				document.body.classList.remove("narrow");
+				document.body.classList.add("full");
+			}
+			else
+			{
+				document.body.classList.remove("full");
+				document.body.classList.add("narrow");
+			}
+		}
+	</script>
+  </body>
+</html>
